@@ -22,17 +22,18 @@
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
   <script>
     $(()=>{
+      console.log(window.location.hostname)
       // 登录
       $("#button").click(function(){
         let username = $('#username').val()
         let password = $('#password').val()
         $.ajax({
           type:"POST",
-          url:'http://localhost:4000/',
+          url:window.location.href,
           dataType:"JSON",
           data:{name:username,pass:password},
           success:function(data){
-            if (data.code === '200') return window.location.href = "http://localhost:4000/home.html"
+            if (data.code === '200') return window.location.href = window.location.href + "home.html"
             alert(data.data)
           }
         });
@@ -47,7 +48,7 @@
         if (password !== password2) return alert('密码不一致！')
         $.ajax({
           type:"POST",
-          url:'http://localhost:4000/register',
+          url:window.location.href + 'register',
           dataType:"JSON",
           data:{name:username,pass:password,phone: phone},
           success:function(data){
