@@ -36,7 +36,6 @@ let register = async (ctx) => {
 }
 
 module.exports = {
-  wxValidation,
   login,
   register
 }
