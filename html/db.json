@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "res":[
+        {
+          "title": "出国申请",
+          "value": "待审批"
+        },
+        {
+          "title": "打印机申请",
+          "value": "待审批"
+        }, {
+          "title": "电脑申请",
+          "value": "待审批"
+        }, {
+          "title": "显示器申请",
+          "value": "已审批"
+        }, {
+          "title": "座位申请",
+          "value": "已审批"
+        }
+      ]
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "res":{
+        "username": "李伟",
+        "birthday": "2018-01-16",
+        "introduction":
+          "需要出国深造,需要出国深造,需要出国深造,需要出国深造,需要出国深造,需要出国深造"
+      }
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

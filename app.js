@@ -19,7 +19,7 @@ app.keys = ['secret'];
 
 app.use(session(CONFIG, app));
 
-app.use(require('koa-static')('./html', {index: 'login.html'}))  // 前端静态文件
+app.use(require('koa-static')('./html', {index: 'index.html'}))  // 前端静态文件
 
 app.use(async (ctx, next) => {
   const start = new Date().getTime()
@@ -32,5 +32,6 @@ app.use(bodyParser())
 
 app.use(router.routes())
 
-
-app.listen(4000)
+// NODE_ENV= "production" 生产
+if(process.env.NODE_ENV === 'production') app.listen(80)
+else app.listen(4000)

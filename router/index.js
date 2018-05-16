@@ -9,7 +9,6 @@ const router = new Router()
 
 router.use(session, authorize)
 
-
 router.post('/', json2str, user.login);
 router.post('/register', json2str, user.register);
 
