@@ -1,12 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>home</title>
 </head>
+
 <body>
-  home页面
+  <h1>增加菜单</h1>
+  一级菜单<input id="menu1" type="text" />
+  路径<input id="href1" type="text" placeholder="使用 / 开始" style="width: 300px" />
+  <br />
+  二级菜单<input id="menu2" type="text" />
+  路径<input id="href2" type="text" placeholder="使用 / 开始" style="width: 300px" />
+  <input id="menu_button" type="button" value="提交" />
+  <h1>获取菜单</h1>
+  <div id="getMenu"></div>
+  <h1>个人信息</h1>
+  <div id="getUser"></div>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+  <script>
+    $(function () {
+      // 增加菜单
+      $('#menu_button').click( () => {
+        let name1 = $('#menu1').val()
+        let name2 = $('#menu2').val()
+        let href1 = $('#href1').val()
+        let href2 = $('#href2').val()
+        if (name1 === '' || href1 === '') return alert('错误！')
+        if(name2 !== '' && href2 === '') return alert('错误！')
+        let data = {
+          name1,
+          name2,
+          href1,
+          href2
+        }
+        $.ajax({
+          type: "POST",
+          url: '/insertMenu',
+          dataType: "JSON",
+          data: data,
+          success: function (data) {
+            alert(data.data)
+          }
+        })
+      })
+      // 获取菜单
+      $.ajax({
+        type: "GET",
+        url: '/getMenu',
+        dataType: "JSON",
+        success: function (data) {
+          $('#getMenu').text(JSON.stringify(data.data))
+          console.log(data.data)
+        }
+      })
+      // 获取个人信息
+      $.ajax({
+        type: "GET",
+        url: '/getUser',
+        dataType: "JSON",
+        success: function (data) {
+          $('#getUser').text(JSON.stringify(data.data))
+        }
+      })
+    })
+  </script>
 </body>
+
 </html>

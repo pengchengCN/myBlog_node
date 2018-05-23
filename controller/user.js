@@ -1,5 +1,14 @@
 const query = require('../db')  // 连接mysql数据库
 
+// 获取个人信息
+let getUser = async (ctx) => {
+  let data = await query(`select * from user where user_id = '1'`)
+  ctx.body = {
+    code: '200',
+    data: data
+  }
+}
+
 // 登录验证
 let login = async (ctx) => {
   let { name, pass } = ctx.request.body
@@ -36,6 +45,7 @@ let register = async (ctx) => {
 }
 
 module.exports = {
+  getUser,
   login,
   register
 }
