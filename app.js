@@ -1,7 +1,7 @@
 const Koa = require('koa')
+const cors = require('koa2-cors')  // 跨域
 const session = require('koa-session');   // session 存储用户信息 cookie
 const bodyParser = require('koa-bodyparser');  // body 解析
-const koaBody = require('koa-body');   // 解析 form-data
 const router = require('./router/index')
 
 const app = new Koa()
@@ -23,6 +23,7 @@ app.use(session(CONFIG, app));
 app.use(require('koa-static')('./html', {index: 'home.html'}))  // 前端静态文件
 
 app.use(async (ctx, next) => {
+  console.log('11111111111')
   const start = new Date().getTime()
   await next()
   const ms = new Date().getTime() - start; // 耗费时间
@@ -31,7 +32,7 @@ app.use(async (ctx, next) => {
 
 app.use(bodyParser())
 
-app.use(koaBody({ multipart: true }));
+app.use(cors())
 
 app.use(router.routes())
 
