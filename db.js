@@ -3,7 +3,8 @@ connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password : '',
-  database: 'myBlog'
+  database: 'myBlog',
+  timezone: '08:00'   // 设置服务器时间为北京时间
 })
 
 connection.connect()

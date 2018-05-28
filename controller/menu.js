@@ -34,23 +34,13 @@ let insertMenu = async (ctx) => {
     data: '创建成功！'
   }
 }
-// 整理菜单数据
-function pushMenu (data, menu) {
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].menu_id === menu.p_id) {
-      data[i].children = data[i].children ? data[i].children : []
-      data[i].children.push(menu)
-    }
-  }
-  return data
-}
 
 // 获取菜单
-let getMenu = async (ctx) => {
+let findMenuAll = async (ctx) => {
   let menuData1 = await query(`select * from menu where hierarchy = 1`)
   let menuData2 = await query(`select * from menu where hierarchy = 2`)
   for (let i = 0; i < menuData2.length; i++) {
-    menuData1 = pushMenu(menuData1, menuData2[i])
+    menuData1 = util.menuCategory(menuData1, menuData2[i])
   }
   ctx.body = {
     code: '200',
@@ -61,5 +51,5 @@ let getMenu = async (ctx) => {
 
 module.exports = {
   insertMenu,
-  getMenu
+  findMenuAll
 }

@@ -9,17 +9,50 @@
 </head>
 
 <body>
-  <h1>增加菜单</h1>
+  <h2>增加菜单</h2>
   一级菜单<input id="menu1" type="text" />
-  路径<input id="href1" type="text" placeholder="使用 / 开始" style="width: 300px" />
+  路径<input id="href1" type="text" placeholder="使用 /category/ 开始" style="width: 300px" />
   <br />
   二级菜单<input id="menu2" type="text" />
-  路径<input id="href2" type="text" placeholder="使用 / 开始" style="width: 300px" />
+  路径<input id="href2" type="text" placeholder="使用 /category/ 开始" style="width: 300px" />
   <input id="menu_button" type="button" value="提交" />
-  <h1>获取菜单</h1>
-  <div id="getMenu"></div>
-  <h1>个人信息</h1>
+  <h2>获取所有菜单</h2>
+  <div id="findMenuAll"></div>
+  <h2>个人信息</h2>
   <div id="getUser"></div>
+  <h2>增加分类</h2>
+  分类名称<input id="category_name" type="text" />
+  分类路径<input id="category_href" type="text" placeholder="使用 /category/ 开始" style="width: 300px" />
+  <input id="category_button" type="button" value="提交" />
+  <h2>获取所有分类</h2>
+  <div id="categoryAll"></div>
+  <h2>增加标签</h2>
+  标签名称<input id="label_name" type="text" />
+  标签路径<input id="label_href" type="text" placeholder="使用 /tag/ 开始" style="width: 300px" />
+  <input id="label_button" type="button" value="提交" />
+  <h2>获取所有标签</h2>
+  <div id="labelAll"></div>
+  <h2>增加文章</h2>
+  <form name="articleForm" id="articleForm" enctype="multipart/form-data">
+    <p>标题:<input type="text" name="title" value="使用CSS3开启GPU硬件加速提升网站动画渲染性能" /></p>  
+    <p>标签:<input type="text" name="label_id" value="fTG4Hb" /></p>
+    <p>作者：<input type="text" name="author" value="张三" /></p>
+    <p>介绍图片:<input type="file" name="introduce_img" id="introduce_img" accept = 'image/jpeg,image/jpg,image/png'></p>
+    <p>介绍文本：
+      <textarea id="introduce_text" name="introduce_text" style="width: 100%; height: 100px;">
+          最近几周一直在搞自己的个人网站，一来是为了总结一下近几年自己的前端职业历程，二来是希望把这个网站做成自己的Web版个人履历/简历。网站首屏会有一个跟随鼠标进行空间透视移动的DOM动画效果，这里用到了一些JS逻辑，由于涉及到动画和性能问题，这里简要总结一下开发过程中遇到的一些问题。想来博客已经近两年没有更新过了，甚感愧疚，2014年一定一定一定会勤快些的！
+      </textarea>
+    </p>
+    <p>文本内容：
+      <textarea type="text" name="text" style="width: 100%; height: 100px;" >
+    　　大家看过网站之后，应该能大致了解到，动画中使用了很多大尺寸半透明PNG24图片，具体尺寸取决于你电脑的分辨率，目前会根据1920/1440/1024这三种分辨率宽度加载不同尺寸的图片。动画逻辑是每个图片都会以不同的速度跟随鼠标移动，以达到空间感很强的透视效果。具体的js逻辑我会在以后单独写一篇讲解，还会把这个动画写成jQuery插件提供给大家下载，敬请关注^_^
+      </textarea>
+  </p>
+    <p><input type="button" name="b1" value="提交" id="article_button" />
+    </p>
+  </form>
+  <h2>获取文章</h2>
+  <div id="articleAll"></div>
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
   <script>
     $(function () {
@@ -50,11 +83,11 @@
       // 获取菜单
       $.ajax({
         type: "GET",
-        url: '/getMenu',
+        url: '/findMenuAll',
         dataType: "JSON",
         success: function (data) {
-          $('#getMenu').text(JSON.stringify(data.data))
-          console.log(data.data)
+          $('#findMenuAll').text(JSON.stringify(data.data))
+          console.log('菜单=', data.data)
         }
       })
       // 获取个人信息
@@ -64,6 +97,90 @@
         dataType: "JSON",
         success: function (data) {
           $('#getUser').text(JSON.stringify(data.data))
+        }
+      })
+      // 增加分类
+      $('#category_button').click( () => {
+        let name = $('#category_name').val()
+        let href = $('#category_href').val()
+        if (name === '' || href === '') return alert('错误！')
+        let data = {
+          name,
+          href
+        }
+        $.ajax({
+          type: "POST",
+          url: '/insertCategory',
+          dataType: "JSON",
+          data: data,
+          success: function (data) {
+            alert(data.data)
+          }
+        })
+      })
+      // 获取分类
+      $.ajax({
+        type: "GET",
+        url: '/categoryAll',
+        dataType: "JSON",
+        success: function (data) {
+          $('#categoryAll').text(JSON.stringify(data.data))
+          console.log('分类=', data.data)
+        }
+      })
+      // 增加标签
+      $('#label_button').click( () => {
+        let name = $('#label_name').val()
+        let href = $('#label_href').val()
+        if (name === '' || href === '') return alert('错误！')
+        let data = {
+          name,
+          href
+        }
+        $.ajax({
+          type: "POST",
+          url: '/insertLabel',
+          dataType: "JSON",
+          data: data,
+          success: function (data) {
+            alert(data.data)
+          }
+        })
+      })
+      // 获取所有标签
+      $.ajax({
+        type: "GET",
+        url: '/labelAll',
+        dataType: "JSON",
+        success: function (data) {
+          $('#labelAll').text(JSON.stringify(data.data))
+          console.log('标签=', data.data)
+        }
+      })
+      // 增加文章
+      $('#article_button').click( () => {
+        var form=document.getElementById("articleForm");
+        var fd =new FormData(form);
+        $.ajax({
+          type: "POST",
+          url: '/insertArticle',
+          data: fd,
+          cache: false,
+          processData: false,
+          contentType: false,
+          success: function (data) {
+            console.log(data.data)
+          }
+        })
+      })
+      // 获取所有文章
+      $.ajax({
+        type: "GET",
+        url: '/articleAll',
+        dataType: "JSON",
+        success: function (data) {
+          $('#articleAll').text(JSON.stringify(data.data))
+          console.log('文章=', data.data)
         }
       })
     })

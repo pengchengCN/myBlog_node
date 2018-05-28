@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const session = require('koa-session');   // session 存储用户信息 cookie
 const bodyParser = require('koa-bodyparser');  // body 解析
+const koaBody = require('koa-body');   // 解析 form-data
 const router = require('./router/index')
 
 const app = new Koa()
@@ -29,6 +30,8 @@ app.use(async (ctx, next) => {
 })
 
 app.use(bodyParser())
+
+app.use(koaBody({ multipart: true }));
 
 app.use(router.routes())
 

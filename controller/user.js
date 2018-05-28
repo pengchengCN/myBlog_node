@@ -5,7 +5,7 @@ let getUser = async (ctx) => {
   let data = await query(`select * from user where user_id = '1'`)
   ctx.body = {
     code: '200',
-    data: data
+    data: data[0]
   }
 }
 

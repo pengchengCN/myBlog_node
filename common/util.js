@@ -17,7 +17,18 @@ let randomNumber = (val) => {
   }
   return str
 }
+// 整理菜单和分类数据
+let menuCategory = (data, menu) => {
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].menu_id === menu.p_id) {
+      data[i].children = data[i].children ? data[i].children : []
+      data[i].children.push(menu)
+    }
+  }
+  return data
+}
 
 module.exports = {
-  randomNumber
+  randomNumber,
+  menuCategory
 }
