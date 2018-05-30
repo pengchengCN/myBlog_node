@@ -27,14 +27,10 @@ let insertCategory = async (ctx) => {
 
 // 获取分类
 let findCategoryAll = async (ctx) => {
-  let menuData1 = await query(`select * from menu where hierarchy = 0 or hierarchy = 1`)
-  let menuData2 = await query(`select * from menu where hierarchy = 2`)
-  for (let i = 0; i < menuData2.length; i++) {
-    menuData1 = util.menuCategory(menuData1, menuData2[i])
-  }
+  let menuData1 = await query(`select * from category`)
   ctx.body = {
     code: '200',
-    data: menuData1
+    categoryList: menuData1
   }
 }
 

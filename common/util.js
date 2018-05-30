@@ -27,8 +27,14 @@ let menuCategory = (data, menu) => {
   }
   return data
 }
+// 是否需要增加至分类表
+let categoryDict = (name) => {
+  if (name === '首页' || name === '生活' || name === '关于') return false
+  return true
+}
 
 module.exports = {
   randomNumber,
-  menuCategory
+  menuCategory,
+  categoryDict
 }

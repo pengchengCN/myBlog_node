@@ -30,7 +30,7 @@ let findLabelAll = async (ctx) => {
   let data = await query(`select * from label`)
   ctx.body = {
     code: '200',
-    data: data
+    labelList: data
   }
 }
 

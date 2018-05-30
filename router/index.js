@@ -27,6 +27,8 @@ router.get('/labelAll', json2str, label.findLabelAll);
 // 增加文章
 router.post('/insertArticle', json2str, koaBody({ multipart: true }), article.insertArticle);
 router.get('/articleAll', json2str, article.findArticleAll);
+// 根据分类获取文章
+router.post('/article/getCategory', json2str, article.findCategoryByArt);
 
 // router.post('/', json2str, user.login);
 // router.post('/register', json2str, user.register);
