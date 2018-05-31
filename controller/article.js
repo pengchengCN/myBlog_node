@@ -26,6 +26,11 @@ let insertArticle = async (ctx) => {
 // 获取全部文章
 let findArticleAll = async (ctx) => {
   let ary = await query(`select * from article ORDER BY release_date DESC`)
+  ary = ary.map(item=>{
+    item.category_id = JSON.parse( item.category_id)
+    item.label_id = JSON.parse( item.label_id)
+    return item
+  })
   ctx.body = {
     code: '200',
     articleList: ary
@@ -35,6 +40,11 @@ let findArticleAll = async (ctx) => {
 let findCategoryByArt = async (ctx) => {
   let { id } = ctx.request.body
   let ary = await query(`select * from article where category_id like concat('%', '${id}', '%')`)
+  ary = ary.map(item=>{
+    item.category_id = JSON.parse( item.category_id)
+    item.label_id = JSON.parse( item.label_id)
+    return item
+  })
   ctx.body = {
     code: '200',
     articleList: ary
