@@ -2,17 +2,19 @@ const query = require('../db')  // 连接mysql数据库
 
 // 获取个人信息
 let getUser = async (ctx) => {
-  let data = await query(`select * from user where user_id = '1'`)
+  let { user } = ctx.request.body
+  console.log(user)
+  let data = await query(`select * from user where user = '${user}'`)
   ctx.body = {
     code: '200',
-    data: data[0]
+    userObj: data[0]
   }
 }
 
 // 登录验证
 let login = async (ctx) => {
-  let { name, pass } = ctx.request.body
-  let data = await query(`select * from user where name = '${name}' and pass = '${pass}';`)
+  let { user, pass } = ctx.request.body
+  let data = await query(`select * from user where user = '${user}' and pass = '${pass}';`)
   if (data.length > 0) {
     ctx.body = {
       code: '200',
@@ -46,6 +48,6 @@ let register = async (ctx) => {
 
 module.exports = {
   getUser,
-  login,
-  register
+  register,
+  login
 }

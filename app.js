@@ -38,4 +38,4 @@ app.use(router.routes())
 
 // NODE_ENV= "production" 生产
 if(process.env.NODE_ENV === 'production') app.listen(80)
-else app.listen(4000)
+else app.listen(5000)

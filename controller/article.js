@@ -4,6 +4,20 @@ const path = require('path');
 const util = require('../common/util')
 
 
+// 增加文章图片
+let insertArticleImg = async (ctx) => {
+  const img = ctx.request.body.files.upload_img
+  const reader = fs.createReadStream(img.path);
+  const href = Math.random().toString() + '.jpg'
+  const stream = fs.createWriteStream(path.join('/Users/pengc/project/myBlog_node/html/article_img', href));
+  reader.pipe(stream);
+  console.log(`article_img/${href}`)
+  ctx.body = {
+    code: '200',
+    msg: '成功！',
+    href: `article_img/${href}`
+  }
+}
 // 增加文章
 let insertArticle = async (ctx) => {
   const {title, category_id, label_id, author, introduce_text, text} = ctx.request.body.fields;
@@ -52,6 +66,7 @@ let findCategoryByArt = async (ctx) => {
 }
 
 module.exports = {
+  insertArticleImg,
   insertArticle,
   findArticleAll,
   findCategoryByArt
