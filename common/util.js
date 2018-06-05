@@ -32,9 +32,22 @@ let categoryDict = (name) => {
   if (name === '首页' || name === '生活' || name === '关于') return false
   return true
 }
-
+// 特殊字符转义 https://www.oschina.net/code/snippet_12_3293
+let html_encode = (val) => {
+  let s = "" 
+  s = val.replace(/\'/g, "&#39;")
+  return s
+}
+// 反转义
+let html_decode = (val) => {
+  let s = "" 
+  s = val.replace(/&#39;/g, "\'");
+  return s
+}
 module.exports = {
   randomNumber,
   menuCategory,
-  categoryDict
+  categoryDict,
+  html_encode,
+  html_decode
 }

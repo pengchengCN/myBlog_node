@@ -20,6 +20,30 @@ let insertArticleImg = async (ctx) => {
 }
 // 增加文章
 let insertArticle = async (ctx) => {
+  let { title, author, category_id, label_id, introduce_img, introduce_text, content, release_date } = ctx.request.body
+  category_id = JSON.stringify(category_id)
+  label_id = JSON.stringify(label_id)
+  let titleName = await query(`select * from article where title = '${title}';`)
+  if (titleName.length === 0) {
+    // 转义字符
+    content = util.html_encode(content)
+    await query(`insert into article (article_id, title, author, category_id, label_id, introduce_img, introduce_text, text, commentsNumber, release_date, create_date)
+      values 
+      ('${util.randomNumber(6)}', '${title}', '${author}', '${category_id}', '${label_id}', '${introduce_img}', '${introduce_text}','${content}', 0, '${release_date}', NOW())
+      `)
+    ctx.body = {
+      code: '200',
+      msg: '新建文章成功！'
+    }
+  } else {
+    ctx.body = {
+      code: '300',
+      data: '文章标题重复，请重新输入'
+    }
+  }
+}
+// 增加文章带图片
+let insertArticleAndImg = async (ctx) => {
   const {title, category_id, label_id, author, introduce_text, text} = ctx.request.body.fields;
   const introduce_img = ctx.request.body.files.introduce_img;
   const reader = fs.createReadStream(introduce_img.path);
@@ -66,8 +90,9 @@ let findCategoryByArt = async (ctx) => {
 }
 
 module.exports = {
-  insertArticleImg,
   insertArticle,
+  insertArticleImg,
+  insertArticleAndImg,
   findArticleAll,
   findCategoryByArt
 }
