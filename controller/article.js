@@ -95,7 +95,7 @@ let insertArticleAndImg = async (ctx) => {
 }
 // 获取全部文章
 let findArticleAll = async (ctx) => {
-  let ary = await query(`select * from article ORDER BY release_date DESC`)
+  let ary = await query(`select article_id, title, author, category_id, label_id, introduce_img, introduce_text, release_date, create_date from article ORDER BY release_date DESC`)
   ary = ary.map(item=>{
     item.category_id = JSON.parse( item.category_id)
     item.label_id = JSON.parse( item.label_id)
