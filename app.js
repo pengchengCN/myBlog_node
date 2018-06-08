@@ -35,9 +35,6 @@ app.use(bodyParser())
 app.use(cors())
 
 app.use(router.routes())
-app.on('error', (err, ctx) => {
-  log.error('@@@@@@@@@@@server error', err, ctx)
-})
 
 // NODE_ENV= "production" 生产
 if(process.env.NODE_ENV === 'production') app.listen(80)
