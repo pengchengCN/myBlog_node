@@ -3,6 +3,7 @@ const session = require('./middleware/session')  // 个人信息、token存储�
 const authorize = require('./middleware/authorize')  // 权限处理
 const json2str = require('./middleware/json2str')  // JSON数据转字符串
 const koaBody = require('koa-body');   // 解析 form-data
+
 const user = require('../controller/user')
 const menu = require('../controller/menu')
 const category = require('../controller/category')
@@ -12,7 +13,7 @@ const article = require('../controller/article')
 
 const router = new Router()
 
-router.use(session, authorize)
+router.use(session)
 /* 展现 */
 // 菜单
 router.post('/insertMenu', json2str, menu.insertMenu);
@@ -33,6 +34,10 @@ router.post('/insertLabel', json2str, label.insertLabel);
 router.get('/labelAll', json2str, label.findLabelAll);
 // 获取全部文章
 router.get('/articleAll', json2str, article.findArticleAll);
+// 获取一篇文章
+router.post('/getArticle', json2str, article.getArticle);
+// 获取一篇文章
+router.post('/getArticleDelete', json2str, article.getArticleDelete);
 // 上传图片 form-data
 router.post('/articleImg', json2str, koaBody({ multipart: true }), article.insertArticleImg);
 // 增加文章

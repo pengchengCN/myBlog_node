@@ -3,6 +3,7 @@ const cors = require('koa2-cors')  // 跨域
 const session = require('koa-session');   // session 存储用户信息 cookie
 const bodyParser = require('koa-bodyparser');  // body 解析
 const router = require('./router/index')
+const abnormal = require('./router/middleware/abnormal')  // 异常处理 404 500 
 
 const app = new Koa()
 
@@ -20,21 +21,23 @@ app.keys = ['secret'];
 
 app.use(session(CONFIG, app));
 
-app.use(require('koa-static')('./html', {index: 'home.html'}))  // 前端静态文件
+app.use(require('koa-static')('./html', {index: 'index.html'}))  // 前端静态文件
 
 app.use(async (ctx, next) => {
-  console.log('11111111111')
   const start = new Date().getTime()
   await next()
   const ms = new Date().getTime() - start; // 耗费时间
-  console.log(`Time: ${ms}ms`); // 打印耗费时间
-})
+  console.log(`耗费时间: ${ms}ms`); // 打印耗费时间
+}).use(abnormal)
 
 app.use(bodyParser())
 
 app.use(cors())
 
 app.use(router.routes())
+app.on('error', (err, ctx) => {
+  log.error('@@@@@@@@@@@server error', err, ctx)
+})
 
 // NODE_ENV= "production" 生产
 if(process.env.NODE_ENV === 'production') app.listen(80)

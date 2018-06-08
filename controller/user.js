@@ -1,4 +1,5 @@
 const query = require('../db')  // 连接mysql数据库
+const util = require('../common/util')
 
 // 获取个人信息
 let getUser = async (ctx) => {
@@ -11,22 +12,21 @@ let getUser = async (ctx) => {
   }
 }
 
+function sett(){
+  return new Promise((a,b)=>{
+    setInterval(() => {
+      a()
+    },4000)
+  })
+}
 // 登录验证
 let login = async (ctx) => {
   let { user, pass } = ctx.request.body
   let data = await query(`select * from user where user = '${user}' and pass = '${pass}';`)
   if (data.length > 0) {
-    ctx.body = {
-      code: '200',
-      data: '登录成功！'
-    }
+    ctx.body = util.messageMethod('200', '登录成功！')
     ctx.session.secret = data
-  } else {
-    ctx.body = {
-      code: '400',
-      data: '账号或密码错误！'
-    }
-  }
+  } else ctx.body = util.messageMethod('400', '账号或密码错误！')
 }
 // 注册
 let register = async (ctx) => {

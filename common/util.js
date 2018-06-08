@@ -1,4 +1,11 @@
 // 常用方法
+// 提示
+let messageMethod = (code, msg) => {
+  return {
+    code,
+    msg
+  }
+}
 // 随机数 返回 数字字母组合val位
 let randomNumber = (val) => {
   let randomFlag = true
@@ -45,6 +52,7 @@ let html_decode = (val) => {
   return s
 }
 module.exports = {
+  messageMethod,
   randomNumber,
   menuCategory,
   categoryDict,

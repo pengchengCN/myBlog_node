@@ -18,28 +18,60 @@ let insertArticleImg = async (ctx) => {
     href: `article_img/${href}`
   }
 }
-// 增加文章
+// 增加文章 / 修改
 let insertArticle = async (ctx) => {
-  let { title, author, category_id, label_id, introduce_img, introduce_text, content, release_date } = ctx.request.body
+  let { article_id, title, author, category_id, label_id, introduce_img, introduce_text, content, release_date } = ctx.request.body
   category_id = JSON.stringify(category_id)
   label_id = JSON.stringify(label_id)
-  let titleName = await query(`select * from article where title = '${title}';`)
-  if (titleName.length === 0) {
-    // 转义字符
-    content = util.html_encode(content)
-    await query(`insert into article (article_id, title, author, category_id, label_id, introduce_img, introduce_text, text, commentsNumber, release_date, create_date)
-      values 
-      ('${util.randomNumber(6)}', '${title}', '${author}', '${category_id}', '${label_id}', '${introduce_img}', '${introduce_text}','${content}', 0, '${release_date}', NOW())
-      `)
-    ctx.body = {
-      code: '200',
-      msg: '新建文章成功！'
-    }
-  } else {
-    ctx.body = {
-      code: '300',
-      data: '文章标题重复，请重新输入'
-    }
+  // 转义字符
+  content = util.html_encode(content)
+
+  let titleName
+  if(article_id === '') titleName = await query(`select title from article where title = '${title}';`)
+  else titleName = await query(`select title from article where title = '${title}' and article_id <> '${article_id}';`)
+
+  // 名称重复
+  if (titleName.length !== 0) return ctx.body = util.messageMethod('300', '文章标题重复，请重新输入')
+
+  // 新建
+  if (article_id === '') {
+    await query(`insert into article (
+      article_id, 
+      title, 
+      author, 
+      category_id, 
+      label_id, 
+      introduce_img, 
+      introduce_text, 
+      text, 
+      commentsNumber, 
+      release_date, 
+      create_date
+    ) values (
+      '${util.randomNumber(6)}', 
+      '${title}', 
+      '${author}', 
+      '${category_id}', 
+      '${label_id}', 
+      '${introduce_img}', 
+      '${introduce_text}',
+      '${content}', 0, 
+      '${release_date}', 
+      NOW())`
+    )
+    ctx.body = util.messageMethod('200', '新建文章成功！')
+  } else { // 修改
+    await query(`update article set
+      title = '${title}', 
+      author = '${author}', 
+      category_id = '${category_id}', 
+      label_id = '${label_id}', 
+      introduce_img = '${introduce_img}', 
+      introduce_text = '${introduce_text}', 
+      text = '${content}', 
+      release_date = '${release_date}' 
+      where article_id = '${article_id}'`)
+    ctx.body = util.messageMethod('200', '修改文章成功！')
   }
 }
 // 增加文章带图片
@@ -74,6 +106,24 @@ let findArticleAll = async (ctx) => {
     articleList: ary
   }
 }
+// 获取一篇文章
+let getArticle = async (ctx) => {
+  let { id } = ctx.request.body
+  let ary = await query(`select * from article where article_id = '${id}'`)
+  let obj = ary[0]
+  obj.category_id = JSON.parse( obj.category_id)
+  obj.label_id = JSON.parse( obj.label_id)
+  ctx.body = {
+    code: '200',
+    articleObj: obj
+  }
+}
+// 删除一篇文章
+let getArticleDelete = async (ctx) => {
+  let { id } = ctx.request.body
+  await query(`delete from article where article_id = '${id}'`)
+  ctx.body = util.messageMethod('200', '删除文章成功！')
+}
 // 根据分类获取文章
 let findCategoryByArt = async (ctx) => {
   let { id } = ctx.request.body
@@ -94,5 +144,7 @@ module.exports = {
   insertArticleImg,
   insertArticleAndImg,
   findArticleAll,
+  getArticle,
+  getArticleDelete,
   findCategoryByArt
 }
